@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111c">
+  <meta name="description" content="Оригинальная браузерная tower defense игра: защитите ядро станции Эйдос.">
+  <title>Эйдос: Контур Обороны</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">E</span><div><small>ОРБИТАЛЬНЫЙ ПРОТОКОЛ</small><h1>ЭЙДОС // КОНТУР</h1></div></div>
+      <div class="stats" aria-label="Состояние игры">
+        <div><small>ЭНЕРГИЯ</small><strong id="credits">180</strong></div>
+        <div><small>ЯДРО</small><strong id="health">20</strong></div>
+        <div><small>ВОЛНА</small><strong id="wave">0</strong></div>
+      </div>
+    </header>
+
+    <section class="game-layout">
+      <div class="arena-wrap">
+        <canvas id="game" width="960" height="600" aria-label="Игровое поле Эйдос"></canvas>
+        <div id="message" class="message">Выберите модуль и установите его вне энергоканала</div>
+        <div id="gameover" class="modal hidden">
+          <div><small>СВЯЗЬ С ЯДРОМ ПОТЕРЯНА</small><h2>Контур разрушен</h2><p id="summary"></p><button id="restart">Новый цикл</button></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-heading"><small>АРСЕНАЛ</small><span id="status">ПОДГОТОВКА</span></div>
+        <div class="tower-list" role="group" aria-label="Выбор башни">
+          <button class="tower-card selected" data-type="pulse"><i class="pulse"></i><span><b>Импульс</b><small>Быстрый луч · 70</small></span><kbd>1</kbd></button>
+          <button class="tower-card" data-type="cryo"><i class="cryo"></i><span><b>Криоузел</b><small>Замедление · 100</small></span><kbd>2</kbd></button>
+          <button class="tower-card" data-type="nova"><i class="nova"></i><span><b>Нова</b><small>Урон по области · 140</small></span><kbd>3</kbd></button>
+        </div>
+        <div id="selection" class="selection empty">
+          <small>ВЫБРАННЫЙ МОДУЛЬ</small>
+          <h3 id="selection-name">Нет активного модуля</h3>
+          <p id="selection-info">Нажмите на установленную башню, чтобы усилить её.</p>
+          <button id="upgrade" disabled>Улучшить</button>
+        </div>
+        <button id="start-wave" class="primary">Запустить волну <span>→</span></button>
+        <button id="reset" class="ghost">Сбросить прогресс</button>
+        <p class="hint">Клик — установить или выбрать · Esc — отменить выбор · Прогресс сохраняется автоматически</p>
+      </aside>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
