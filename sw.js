@@ -1,5 +1,5 @@
 /* Scoped offline cache. Fresh code online, saved code offline; no API caching. */
-const VERSION = 'eidos-v2-20261006';
+const VERSION = 'eidos-v2-20261006-pairs1';
 const PREFIX = 'eidos-';
 const ASSETS = ["./", "index.html", "styles.css", "game.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png", "studio/config.js", "studio/studio.js", "studio/studio.css", "studio/looks/look-01.webp", "studio/looks/look-02.webp", "studio/looks/look-03.webp", "studio/looks/look-04.webp", "studio/looks/look-05.webp", "studio/looks/look-06.webp", "studio/looks/look-07.webp", "studio/looks/look-08.webp", "studio/looks/look-09.webp", "studio/looks/look-10.webp"];
 const SHELL = new URL('index.html', self.registration.scope).href;

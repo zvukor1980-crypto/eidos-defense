@@ -22,6 +22,7 @@
   dialog.innerHTML = `<header class="as-head"><div><small>Личная коллекция</small><h2 id="as-title">Образы и оформление</h2></div><button type="button" class="as-close" aria-label="Закрыть">×</button></header>
     <p class="as-lead"></p><section class="as-section"><h3>Материал интерфейса</h3><div class="as-themes"></div></section>
     <section class="as-section"><h3>Коллекция образов</h3><p>Выбери любимый образ. Нажми на картинку, чтобы рассмотреть её целиком.</p><div class="as-looks"></div><button type="button" class="as-reset-look">Убрать любимый образ</button></section>
+    <section class="as-section as-memory"><h3>Найди пары образов</h3><p>Открой две карточки. Найди одинаковые фотографии. Можно играть спокойно, без таймера.</p><label>Размер поля <select id="as-memory-level"><option value="4">Легко · 4 пары</option><option value="6">Средне · 6 пар</option><option value="10">Сложно · 10 пар</option></select></label><div class="as-actions"><button type="button" id="as-memory-start">Новая игра</button><button type="button" id="as-memory-daily">Задание дня</button></div><p id="as-memory-status" role="status" aria-live="polite">Нажми «Новая игра», чтобы начать.</p><div id="as-memory-board" class="as-memory-board" aria-label="Карточки для поиска пар"></div></section>
     <section class="as-section"><h3>Удобство</h3><label><input type="checkbox" id="as-large"> Крупные кнопки и текст</label><label><input type="checkbox" id="as-quiet"> Меньше декоративных анимаций</label><button type="button" id="as-install">Как добавить на главный экран</button><p id="as-install-help" hidden>На iPhone открой приложение в Safari, нажми «Поделиться» и выбери «На экран Домой». Сохранённый прогресс остаётся в этом браузере.</p></section>
     <section class="as-section as-backups"><h3>Копия прогресса</h3><p>Сохрани копию в «Файлы» перед переустановкой или переносом на другой телефон.</p><div class="as-actions"><button type="button" id="as-export">Сохранить копию</button><button type="button" id="as-import">Восстановить копию</button></div><input type="file" id="as-file" accept="application/json,.json" hidden></section>
     <p id="as-notice" role="status" aria-live="polite"></p>`;
@@ -53,7 +54,67 @@
       full.append(photo,close);dialog.appendChild(full);close.focus();
     };card.append(view,label,choose);dialog.querySelector('.as-looks').appendChild(card);
   }
-  const close=()=>{if(dialog.close)dialog.close();else dialog.removeAttribute('open');launcher.focus();};
+  // Photo pairs: turn-based, no rendering loop or repeating timer.
+  const memoryKey = prefKey + ':pairs';
+  const board = dialog.querySelector('#as-memory-board');
+  const memoryStatus = dialog.querySelector('#as-memory-status');
+  let pairCards=[], opened=[], matched=0, moves=0, locked=false, hideTimer=null, round=0, dailyLabel='';
+  let records={};
+  try { const value=JSON.parse(localStorage.getItem(memoryKey)||'{}'); if(value&&typeof value==='object'&&!Array.isArray(value))records=value; } catch {}
+  function stopFlipTimer(){if(hideTimer!==null){clearTimeout(hideTimer);hideTimer=null;}if(locked){for(const i of opened)revealCard(i,false);opened=[];locked=false;}}
+  function revealCard(i,shown){
+    const b=board.children[i];if(!b)return;b.classList.toggle('as-revealed',shown);b.querySelector('img').hidden=!shown;b.querySelector('span').hidden=shown;
+    b.setAttribute('aria-label',shown?'Образ '+pairCards[i]:'Закрытая карточка '+(i+1));
+    b.setAttribute('aria-pressed',String(shown));
+  }
+  function memorySummary(){
+    const count=pairCards.length/2,key=String(count),best=Number.isInteger(records[key])&&records[key]>=count?records[key]:null;
+    memoryStatus.textContent=(dailyLabel?dailyLabel+' · ':'')+'Пары: '+matched+' / '+count+' · Ходы: '+moves+(best?' · Рекорд: '+best:'');
+  }
+  function randomSource(seed){
+    if(seed===undefined)return Math.random;
+    let state=2166136261;for(const c of seed)state=Math.imul(state^c.charCodeAt(0),16777619)>>>0;
+    return ()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296;};
+  }
+  function shuffle(values,rng){for(let i=values.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[values[i],values[j]]=[values[j],values[i]];}return values;}
+  function startPairs(daily){
+    stopFlipTimer();round++;opened=[];matched=0;moves=0;locked=false;board.replaceChildren();
+    const count=Number(dialog.querySelector('#as-memory-level').value);
+    const now=new Date(),date=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    dailyLabel=daily?'Задание '+date:'';
+    const rng=randomSource(daily?date+':'+count:undefined),photos=shuffle(Array.from({length:10},(_,i)=>i+1),rng).slice(0,count);
+    pairCards=shuffle([...photos,...photos],rng);
+    board.dataset.pairs=String(count);
+    pairCards.forEach((photo,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='as-memory-card';
+      const img=document.createElement('img');img.src=imgUrl(photo);img.alt='Образ '+photo;img.width=480;img.height=1037;img.hidden=true;img.decoding='async';
+      const back=document.createElement('span');back.textContent='✦';back.setAttribute('aria-hidden','true');b.append(img,back);board.append(b);revealCard(i,false);
+      b.onclick=()=>{
+        if(locked||b.disabled||opened.includes(i))return;
+        revealCard(i,true);opened.push(i);if(opened.length<2)return;
+        moves++;const [a,z]=opened;
+        if(pairCards[a]===pairCards[z]){
+          board.children[a].disabled=true;board.children[z].disabled=true;board.children[a].classList.add('as-matched');board.children[z].classList.add('as-matched');opened=[];matched++;memorySummary();
+          if(matched===count){
+            const old=Number.isInteger(records[String(count)])&&records[String(count)]>=count?records[String(count)]:Infinity;
+            records[String(count)]=Math.min(old,moves);
+            let saved=true;try{localStorage.setItem(memoryKey,JSON.stringify(records));}catch{saved=false;}
+            memorySummary();memoryStatus.textContent+=' · Готово! Все пары найдены.'+(saved?'':' Рекорд не удалось сохранить.');
+          }
+        }else{
+          locked=true;memorySummary();const currentRound=round;
+          hideTimer=setTimeout(()=>{hideTimer=null;if(currentRound!==round)return;revealCard(a,false);revealCard(z,false);opened=[];locked=false;},850);
+        }
+      };
+    });memorySummary();
+  }
+  dialog.querySelector('#as-memory-start').onclick=()=>startPairs(false);
+  dialog.querySelector('#as-memory-daily').onclick=()=>startPairs(true);
+  dialog.querySelector('#as-memory-level').onchange=()=>startPairs(false);
+  dialog.addEventListener('close',stopFlipTimer);
+  dialog.addEventListener('cancel',stopFlipTimer);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopFlipTimer();});
+  const close=()=>{stopFlipTimer();if(dialog.close)dialog.close();else dialog.removeAttribute('open');launcher.focus();};
   dialog.querySelector('.as-close').onclick=close;
   dialog.addEventListener('click',e=>{if(e.target===dialog)close();});
   dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&dialog.querySelector('.as-full')){e.preventDefault();dialog.querySelector('.as-full button').click();}});
