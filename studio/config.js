@@ -1,0 +1,1 @@
+window.ALEKSEI_STUDIO = {"id": "eidos-defense", "title": "Эйдос: Контур Обороны", "accent": "#465be8", "keys": ["eidos-defense-v1"], "caption": "Эйдос: Контур Обороны · твоя коллекция образов и настройки оформления"};

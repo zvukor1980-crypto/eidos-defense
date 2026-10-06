@@ -2,11 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07111c">
   <meta name="description" content="Оригинальная браузерная tower defense игра: защитите ядро станции Эйдос.">
   <title>Эйдос: Контур Обороны</title>
   <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="studio/studio.css">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
   <main class="shell">
@@ -44,6 +46,8 @@
           <button id="upgrade" disabled>Улучшить</button>
         </div>
         <div class="mission-strip"><span>БОСС каждые 5 волн</span><b id="best-wave">Рекорд 0</b></div>
+        <div class="play-controls"><button id="pause">Пауза</button><button id="speed">Скорость ×1</button><button id="sound">Звук: выкл</button></div>
+        <button id="sell" disabled>Продать выбранный модуль · возврат 65%</button>
         <button id="start-wave" class="primary">Запустить волну <span>→</span></button>
         <button id="reset" class="ghost">Сбросить прогресс</button>
         <p class="hint">Клик — установить или выбрать · Esc — отменить выбор · Прогресс сохраняется автоматически</p>
@@ -51,5 +55,7 @@
     </section>
   </main>
   <script src="game.js"></script>
+<script src="studio/config.js"></script>
+<script src="studio/studio.js"></script>
 </body>
 </html>
