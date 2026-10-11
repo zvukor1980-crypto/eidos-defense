@@ -1,0 +1,11 @@
+/* Small, static surfaces. Game boards and motion keep their own layout. */
+:root{--kit-accent:#e3c89c;--kit-dark:#15242d;--kit-soft:#c8d9d8}
+html.playkit-eco .blob,html.playkit-eco .beam,html.playkit-eco .bg-orb,html.playkit-eco .sparkle,html.playkit-eco .menu-shine{animation:none!important;filter:none!important}
+html.playkit-hidden *,html.playkit-hidden *::before,html.playkit-hidden *::after{animation-play-state:paused!important}
+html.playkit-large p,html.playkit-large label,html.playkit-large .desc,html.playkit-large .note,html.playkit-large .hint{font-size:max(1em,17px)!important;line-height:1.65}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--kit-accent);outline-offset:3px}
+input:not([type=range]):not([type=checkbox]):not([type=radio]),textarea{font-size:16px}
+.hero,.sheetCard,.settings,.designTools,.matchInfo,.quest{border-radius:22px}
+.primary,.btn-primary{box-shadow:0 4px 0 #0002,0 10px 22px #0001}
+@media(prefers-reduced-motion:reduce){.blob,.beam,.bg-orb,.sparkle,.menu-shine{animation:none!important}}
