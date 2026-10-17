@@ -1,2 +1,10 @@
-:root{--kit-accent:#c2b9e6;--kit-dark:#293956}
-body{background:radial-gradient(ellipse at top,#38415a,#171e2f)}.panel,.card{border-radius:20px;border-color:#b9bbe333}.primary{background:linear-gradient(135deg,#b8cfde,#b9add9)}
+/* Mission control: precision panels and readable controls at phone scale. */
+:root{--kit-accent:#7ee7d3;--kit-dark:#0c2330;--cyan:#7ee7d3;--blue:#8ebcff;--muted:#9cb3c6;--line:#87b6cb35}
+body{background:radial-gradient(ellipse at 20% 0%,#17455355,transparent 65%),#07111b}
+.arena-wrap{border-radius:18px;border-color:#77c4cf66;box-shadow:0 18px 60px #0005,inset 0 1px 0 #fff1}.panel{border-radius:18px;background:linear-gradient(145deg,#112737,#0a1928)}
+.tower-card{border-radius:12px;padding:12px;background:#0d2130}.tower-card.selected{border-color:#7ee7d3;background:#153c43;box-shadow:inset 3px 0 0 #7ee7d3}.tower-card small{color:#afc1ce}
+.stats{border-radius:12px;overflow:hidden}.selection{border-radius:12px;background:#0b1d2a}.primary{border-radius:12px;background:linear-gradient(120deg,#91efdb,#55bcb8);color:#09252a;min-height:48px}.ghost,.play-controls button,#sell{border-radius:10px;min-height:44px;background:#0a1d2a;color:#c1d6e5;border:1px solid #456879}
+.message{border-radius:8px;color:#c0d5df;max-width:calc(100% - 24px)}.hint{color:#9ab1c3}
+button:focus-visible{outline:3px solid #b7fff0;outline-offset:3px}
+@media(max-width:600px){.brand h1{font-size:12px;letter-spacing:.05em}.brand{gap:7px}.brand-mark{width:34px;height:34px;font-size:19px}.stats div{padding:7px}.panel{gap:10px}.tower-list{grid-template-columns:repeat(2,minmax(0,1fr))}.tower-card{padding:9px;gap:7px;grid-template-columns:26px minmax(0,1fr)}.tower-card i{width:25px;height:25px}.tower-card b{font-size:11px}.tower-card small{font-size:9px}.tower-card:last-child{grid-column:1/-1}.message{left:10px;bottom:10px;font-size:10px}.mission-strip{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
