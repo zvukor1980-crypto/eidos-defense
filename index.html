@@ -3,59 +3,62 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#07111c">
+  <meta name="theme-color" content="#150a3a">
   <meta name="description" content="Оригинальная браузерная tower defense игра: защитите ядро станции Эйдос.">
   <title>Эйдос: Контур Обороны</title>
   <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="studio/studio.css">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes">
-<script>window.PLAY_KIT_CONFIG={"id": "eidos", "name": "Эйдос", "help": "Выберите защиту, размещайте башни и удерживайте путь. Следите за ресурсами и улучшайте наиболее полезные позиции перед следующей волной.", "storageKeys": ["eidos-defense-v1"], "storagePrefixes": ["eidos"], "previousUrl": "https://zvukor1980-crypto.github.io/eidos-defense/"};</script><script src="./play-kit.js"></script><link rel="stylesheet" href="./play-kit.css"><link rel="stylesheet" href="./collection-theme.css"></head>
+<script>window.PLAY_KIT_CONFIG={"id": "eidos", "name": "Эйдос", "help": "Выберите защиту, размещайте башни и удерживайте путь. Следите за ресурсами и улучшайте наиболее полезные позиции перед следующей волной.", "storageKeys": ["eidos-defense-v1"], "storagePrefixes": ["eidos"], "previousUrl": "https://zvukor1980-crypto.github.io/eidos-defense/"};</script><script src="./play-kit.js"></script><link rel="stylesheet" href="./play-kit.css"><link rel="stylesheet" href="./collection-theme.css"><link rel="stylesheet" href="./eidos-v2.css"></head>
 <body>
   <main class="shell">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark">E</span><div><small>ОРБИТАЛЬНЫЙ ПРОТОКОЛ</small><h1>ЭЙДОС // КОНТУР</h1></div></div>
+      <div class="brand"><span class="brand-mark">✦</span><div><small>ЗВЁЗДНЫЙ ПРОТОКОЛ</small><h1>ЭЙДОС<em>Контур обороны</em></h1></div></div>
       <div class="stats" aria-label="Состояние игры">
-        <div><small>ЭНЕРГИЯ</small><strong id="credits">180</strong></div>
-        <div><small>ЯДРО</small><strong id="health">20</strong></div>
-        <div><small>ВОЛНА</small><strong id="wave">0</strong></div>
+        <div class="st-en"><small>ЭНЕРГИЯ</small><strong id="credits">180</strong></div>
+        <div class="st-hp"><small>ЯДРО</small><strong id="health">20</strong></div>
+        <div class="st-wv"><small>ВОЛНА</small><strong id="wave">0</strong></div>
       </div>
     </header>
 
     <section class="game-layout">
-      <div class="arena-wrap">
+      <div class="arena-wrap" id="arena">
         <canvas id="game" width="960" height="600" aria-label="Игровое поле Эйдос"></canvas>
         <div id="message" class="message">Выберите модуль и установите его вне энергоканала</div>
+        <div id="towerPop" class="tower-pop hidden" role="dialog" aria-label="Выбранный модуль">
+          <div class="tp-head"><div><small>ВЫБРАННЫЙ МОДУЛЬ</small><h3 id="selection-name">Нет активного модуля</h3></div><button id="tpClose" class="tp-close" aria-label="Закрыть">×</button></div>
+          <p id="selection-info">Нажмите на установленную башню, чтобы усилить её.</p>
+          <div class="tp-actions"><button id="upgrade" disabled>Улучшить</button><button id="sell" disabled>Продать</button></div>
+        </div>
         <div id="gameover" class="modal hidden">
           <div><small>СВЯЗЬ С ЯДРОМ ПОТЕРЯНА</small><h2>Контур разрушен</h2><p id="summary"></p><button id="restart">Новый цикл</button></div>
+        </div>
+        <div id="questModal" class="modal quest-modal hidden">
+          <div><small>ЗАДАНИЯ ДНЯ</small><h2>Звёздные поручения</h2><ul id="questList"></ul><p class="q-note">Выполните все три — получите заряд орбитального удара и +150 энергии.</p><button id="questClose">Готово</button></div>
         </div>
       </div>
 
       <aside class="panel">
         <div class="panel-heading"><small>АРСЕНАЛ</small><span id="status">ПОДГОТОВКА</span></div>
         <div class="tower-list" role="group" aria-label="Выбор башни">
-          <button class="tower-card selected" data-type="pulse"><i class="pulse"></i><span><b>Импульс</b><small>Быстрый луч · 70</small></span><kbd>1</kbd></button>
-          <button class="tower-card" data-type="cryo"><i class="cryo"></i><span><b>Криоузел</b><small>Замедление · 100</small></span><kbd>2</kbd></button>
-          <button class="tower-card" data-type="nova"><i class="nova"></i><span><b>Нова</b><small>Урон по области · 140</small></span><kbd>3</kbd></button>
-          <button class="tower-card" data-type="prism"><i class="prism"></i><span><b>Призма</b><small>Дальний тяжёлый луч · 170</small></span><kbd>4</kbd></button>
-          <button class="tower-card" data-type="tesla"><i class="tesla"></i><span><b>Тесла</b><small>Цепной разряд · 190</small></span><kbd>5</kbd></button>
+          <button class="tower-card selected" data-type="pulse"><i class="pulse"></i><span><b>Импульс</b><small>Быстрый луч · <em>70</em></small></span><kbd>1</kbd></button>
+          <button class="tower-card" data-type="cryo"><i class="cryo"></i><span><b>Криоузел</b><small>Замедление · <em>100</em></small></span><kbd>2</kbd></button>
+          <button class="tower-card" data-type="nova"><i class="nova"></i><span><b>Нова</b><small>Урон по области · <em>140</em></small></span><kbd>3</kbd></button>
+          <button class="tower-card" data-type="prism"><i class="prism"></i><span><b>Призма</b><small>Пробивающий луч · <em>170</em></small></span><kbd>4</kbd></button>
+          <button class="tower-card" data-type="tesla"><i class="tesla"></i><span><b>Тесла</b><small>Цепной разряд · <em>190</em></small></span><kbd>5</kbd></button>
         </div>
-        <div id="selection" class="selection empty">
-          <small>ВЫБРАННЫЙ МОДУЛЬ</small>
-          <h3 id="selection-name">Нет активного модуля</h3>
-          <p id="selection-info">Нажмите на установленную башню, чтобы усилить её.</p>
-          <button id="upgrade" disabled>Улучшить</button>
+        <div class="action-row">
+          <div class="play-controls"><button id="pause" aria-label="Пауза">Пауза</button><button id="speed">Скорость ×1</button><button id="strike" class="strike" aria-label="Орбитальный удар"><span class="ico">☄</span><span class="lbl">Удар</span><i id="strikeFill"></i></button><button id="quests" class="qbtn" aria-label="Задания дня">📜<b id="questBadge" hidden>!</b></button></div>
+          <button id="start-wave" class="primary">Запустить волну <span>→</span></button>
         </div>
-        <div class="mission-strip"><span>БОСС каждые 5 волн</span><b id="best-wave">Рекорд 0</b></div>
-        <div class="play-controls"><button id="pause">Пауза</button><button id="speed">Скорость ×1</button><button id="sound">Звук: выкл</button></div>
-        <button id="sell" disabled>Продать выбранный модуль · возврат 65%</button>
-        <button id="start-wave" class="primary">Запустить волну <span>→</span></button>
-        <button id="reset" class="ghost">Сбросить прогресс</button>
-        <p class="hint">Клик — установить или выбрать · Esc — отменить выбор · Прогресс сохраняется автоматически</p>
+        <div class="extras">
+          <div class="mission-strip"><span>БОСС каждые 5 волн</span><b id="best-wave">Рекорд 0</b></div>
+          <div class="extra-row"><button id="sound">Звук: выкл</button><button id="auto">Автоволна: выкл</button></div>
+          <button id="reset" class="ghost">Сбросить прогресс</button>
+          <p class="hint">Касание — установить или выбрать башню · ☄ — орбитальный удар по выбранной точке · Во время волны можно вызвать следующую досрочно за бонус · Прогресс сохраняется автоматически</p>
+        </div>
       </aside>
     </section>
   </main>
   <script src="game.js"></script>
-<script src="studio/config.js"></script>
-<script src="studio/studio.js"></script>
 </body>
 </html>
