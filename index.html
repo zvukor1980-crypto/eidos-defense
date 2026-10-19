@@ -10,8 +10,24 @@
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes">
 <script>window.PLAY_KIT_CONFIG={"id": "eidos", "name": "Эйдос", "help": "Выберите защиту, размещайте башни и удерживайте путь. Следите за ресурсами и улучшайте наиболее полезные позиции перед следующей волной.", "storageKeys": ["eidos-defense-v1"], "storagePrefixes": ["eidos"], "previousUrl": "https://zvukor1980-crypto.github.io/eidos-defense/"};</script><script src="./play-kit.js"></script><link rel="stylesheet" href="./play-kit.css"><link rel="stylesheet" href="./collection-theme.css"><link rel="stylesheet" href="./eidos-v2.css"></head>
 <body>
+  <div id="title" class="title-screen">
+    <canvas id="titleFx" aria-hidden="true"></canvas>
+    <div class="ts-inner">
+      <div class="ts-logo"><span class="ts-gem">✦</span><h1>ЭЙДОС</h1><p>Звёздные врата</p></div>
+      <button id="tsPlay" class="ts-play"><b>Играть</b><small id="tsPlaySub">Орбита Эйдос</small></button>
+      <h2 class="ts-h">Сектора галактики</h2>
+      <div id="tsSectors" class="ts-sectors"></div>
+      <div class="ts-row"><button id="tsQuests">📜 Задания дня <b id="tsQuestBadge"></b></button><button id="tsHelp">❔ Как играть</button></div>
+      <div id="tsQuestBox" class="ts-help quest-modal" hidden><ul id="tsQuestList"></ul><p class="q-note">Все три — заряд орбитального удара и +150 энергии.</p></div>
+      <div id="tsHelpBox" class="ts-help" hidden>
+        <p>Ставьте модули рядом с энергоканалом, улучшайте их до ★★★★★ и не пускайте врагов к ядру.</p>
+        <p><b>Щитоносец</b> — сначала сбейте щит. <b>Раскольник</b> — делится на двух малышей. <b>Целитель</b> — лечит соседей, бейте его первым.</p>
+        <p>☄ Орбитальный удар — по любой точке. Волну можно вызвать досрочно за бонус. Волна 6 в секторе открывает следующий.</p>
+      </div>
+    </div>
+  </div>
   <main class="shell">
-    <header class="topbar">
+    <header class="topbar"><button id="menuBtn" class="menu-btn" aria-label="Меню и сектора">☰</button>
       <div class="brand"><span class="brand-mark">✦</span><div><small>ЗВЁЗДНЫЙ ПРОТОКОЛ</small><h1>ЭЙДОС<em>Контур обороны</em></h1></div></div>
       <div class="stats" aria-label="Состояние игры">
         <div class="st-en"><small>ЭНЕРГИЯ</small><strong id="credits">180</strong></div>
@@ -30,7 +46,7 @@
           <div class="tp-actions"><button id="upgrade" disabled>Улучшить</button><button id="sell" disabled>Продать</button></div>
         </div>
         <div id="gameover" class="modal hidden">
-          <div><small>СВЯЗЬ С ЯДРОМ ПОТЕРЯНА</small><h2>Контур разрушен</h2><p id="summary"></p><button id="restart">Новый цикл</button></div>
+          <div><small>СВЯЗЬ С ЯДРОМ ПОТЕРЯНА</small><h2>Контур разрушен</h2><p id="summary"></p><div class="go-row"><button id="restart">Новый цикл</button><button id="goMenu" class="alt">Сектора</button></div></div>
         </div>
         <div id="questModal" class="modal quest-modal hidden">
           <div><small>ЗАДАНИЯ ДНЯ</small><h2>Звёздные поручения</h2><ul id="questList"></ul><p class="q-note">Выполните все три — получите заряд орбитального удара и +150 энергии.</p><button id="questClose">Готово</button></div>

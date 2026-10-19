@@ -1,5 +1,5 @@
 /* Scoped offline cache. Fresh code online, saved code offline; no API caching. */
-const VERSION = 'collection-eidos-20261019-v2-stars-clean';
+const VERSION = 'collection-eidos-20261019-v3-gates';
 const PREFIX = 'collection-eidos-';
 const ASSETS = ['./play-kit.js','./play-kit.css','./collection-theme.css','./eidos-v2.css',"./", "index.html", "styles.css", "game.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 const SHELL = new URL('index.html', self.registration.scope).href;

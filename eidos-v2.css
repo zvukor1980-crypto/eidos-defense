@@ -98,3 +98,34 @@ body{background:radial-gradient(ellipse at 15% -5%,#8a3cff66,transparent 55%),ra
 @media(min-width:701px){.topbar #playkit-tools{position:static!important}}
 .primary:disabled{background:linear-gradient(180deg,#6f5cb8,#3d2f7a)!important;color:#efe6ff!important;box-shadow:0 4px 0 #22184a!important;filter:none!important;opacity:.85}
 .primary:disabled::after{display:none}
+/* v3: титульный экран и сектора */
+.menu-btn{flex:none;width:40px;height:40px;border-radius:12px;border:1px solid #ffffff33;background:linear-gradient(180deg,#ffffff26,#ffffff08);color:#fff;font-size:18px;cursor:pointer;box-shadow:inset 0 1px 0 #ffffff40}
+.topbar .brand{cursor:pointer}
+.go-row{display:flex;gap:8px;justify-content:center}.modal button.alt{background:#ffffff1f!important;color:#fff!important;box-shadow:none}
+.title-screen{position:fixed;inset:0;z-index:1000;overflow-y:auto;overscroll-behavior:contain;background:radial-gradient(ellipse at 50% 20%,#5a1fa8,#1a0b4a 55%,#0a0628);transition:opacity .45s,transform .45s}
+.title-screen.hide{opacity:0;transform:scale(1.06);pointer-events:none}
+#titleFx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.ts-inner{position:relative;max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 22px) 16px calc(env(safe-area-inset-bottom) + 24px);display:flex;flex-direction:column;gap:14px}
+.ts-logo{text-align:center;margin:18px 0 6px;animation:tsFloat 4s ease-in-out infinite}
+@keyframes tsFloat{50%{transform:translateY(-6px)}}
+.ts-gem{display:inline-grid;place-items:center;width:62px;height:62px;font-size:32px;color:#3a1406;background:radial-gradient(circle at 35% 30%,#fff,#ffe08a 35%,#f0a90f 75%,#a8640a);clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%);filter:drop-shadow(0 0 18px #ffd35a)}
+.ts-logo h1{margin:6px 0 0;font:900 64px/1 system-ui,sans-serif;letter-spacing:.08em;background:linear-gradient(180deg,#fffaf0,#ffd76a 55%,#ff8a3a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 #4a1a7a) drop-shadow(0 0 24px #ff9de988)}
+.ts-logo p{margin:4px 0 0;font:800 15px system-ui;letter-spacing:.42em;color:#e6dcff;text-transform:uppercase}
+.ts-play{position:relative;overflow:hidden;border:0;border-radius:22px;min-height:76px;cursor:pointer;background:linear-gradient(180deg,#ffe9a6,#f6b23b 55%,#e2742a);color:#3a1406;box-shadow:0 6px 0 #8a3a12,0 16px 40px #ff9f3a77,inset 0 2px 0 #fff9;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:tsPulse 2.2s ease-in-out infinite}
+.ts-play b{font:900 28px system-ui;letter-spacing:.12em;text-transform:uppercase}.ts-play small{font:800 12px system-ui;opacity:.75}
+.ts-play::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,#ffffff80 50%,transparent 65%);transform:translateX(-100%);animation:cardShine 2.8s ease-in-out infinite}
+.ts-play:active{transform:translateY(4px);box-shadow:0 2px 0 #8a3a12}
+@keyframes tsPulse{50%{box-shadow:0 6px 0 #8a3a12,0 16px 56px #ffb84aaa,inset 0 2px 0 #fff9}}
+.ts-h{margin:8px 0 0;font:900 12px system-ui;letter-spacing:.28em;color:#ffd6f4;text-align:center;text-transform:uppercase}
+.ts-sectors{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ts-sec{position:relative;overflow:hidden;text-align:left;border-radius:18px;border:1px solid #ffffff33;padding:12px;min-height:118px;cursor:pointer;color:#fff;background:var(--sg);box-shadow:inset 0 1px 0 #ffffff40,0 8px 20px #0007;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.ts-sec::before{content:"";position:absolute;right:-18px;top:-18px;width:86px;height:86px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,var(--sa) 40%,transparent 72%);opacity:.85}
+.ts-sec b{font:900 15px/1.15 system-ui;position:relative}.ts-sec small{font:600 11px/1.3 system-ui;opacity:.85;position:relative}
+.ts-sec .stars{font-size:15px;letter-spacing:2px;color:#ffe27a;text-shadow:0 0 8px #ffb84a;position:relative}.ts-sec .stars i{font-style:normal;color:#ffffff40;text-shadow:none}
+.ts-sec.cur{outline:3px solid #ffe08a;outline-offset:-3px;box-shadow:0 0 24px #ffd35a77,inset 0 1px 0 #fff6}
+.ts-sec.locked{filter:grayscale(.75) brightness(.7);cursor:not-allowed}.ts-sec.locked::after{content:"🔒";position:absolute;top:10px;left:12px;font-size:18px}
+.ts-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ts-row button{min-height:50px;border-radius:16px;border:1px solid #ffffff33;background:linear-gradient(180deg,#ffffff26,#ffffff08);color:#fff;font:800 14px system-ui;cursor:pointer;position:relative}
+.ts-row b{position:absolute;top:-6px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:#ff3d7a;font:900 11px/20px system-ui}.ts-row b:empty{display:none}
+.ts-help{border-radius:16px;background:#ffffff14;border:1px solid #ffffff26;padding:4px 14px;font-size:13px;color:#ece4ff}
+html.playkit-eco .ts-logo,html.playkit-eco .ts-play{animation:none}
